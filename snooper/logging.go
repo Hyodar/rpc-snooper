@@ -10,7 +10,7 @@ import (
 	"runtime/debug"
 	"strings"
 
-	"github.com/ethpandaops/rpc-snooper/utils"
+	"github.com/Hyodar/rpc-snooper/utils"
 	"github.com/fatih/color"
 	"github.com/sirupsen/logrus"
 )

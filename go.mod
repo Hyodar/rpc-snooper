@@ -1,4 +1,4 @@
-module github.com/ethpandaops/rpc-snooper
+module github.com/Hyodar/rpc-snooper
 
 go 1.21.1
 

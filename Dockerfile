@@ -10,7 +10,7 @@ ARG release=
 RUN <<EOR
   VERSION=$(git rev-parse --short HEAD)
   RELEASE=$release
-  CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o /app/snooper -ldflags="-s -w -X 'github.com/ethpandaops/rpc-snooper/utils.BuildVersion=${VERSION}' -X 'github.com/ethpandaops/rpc-snooper/utils.BuildRelease=${RELEASE}'" ./cmd/snooper
+  CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o /app/snooper -ldflags="-s -w -X 'github.com/Hyodar/rpc-snooper/utils.BuildVersion=${VERSION}' -X 'github.com/Hyodar/rpc-snooper/utils.BuildRelease=${RELEASE}'" ./cmd/snooper
 EOR
 
 # final stage

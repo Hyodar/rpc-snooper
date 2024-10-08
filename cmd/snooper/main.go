@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/ethpandaops/rpc-snooper/snooper"
-	"github.com/ethpandaops/rpc-snooper/utils"
+	"github.com/Hyodar/rpc-snooper/snooper"
+	"github.com/Hyodar/rpc-snooper/utils"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/pflag"
 )

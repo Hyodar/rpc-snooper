@@ -19,7 +19,7 @@ Ensure you have `git` and `make` installed on your system to build `rpc-snooper`
 To build `rpc-snooper` from source, follow these steps:
 
 ```bash
-git clone https://github.com/ethpandaops/rpc-snooper.git
+git clone https://github.com/Hyodar/rpc-snooper.git
 cd rpc-snooper
 make
 ```

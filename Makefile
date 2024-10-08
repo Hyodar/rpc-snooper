@@ -1,7 +1,7 @@
 # assertoor
 VERSION := $(shell git rev-parse --short HEAD)
-GOLDFLAGS += -X 'github.com/ethpandaops/rpc-snooper/utils.BuildVersion="$(VERSION)"'
-GOLDFLAGS += -X 'github.com/ethpandaops/rpc-snooper/utils.BuildRelease="$(RELEASE)"'
+GOLDFLAGS += -X 'github.com/Hyodar/rpc-snooper/utils.BuildVersion="$(VERSION)"'
+GOLDFLAGS += -X 'github.com/Hyodar/rpc-snooper/utils.BuildRelease="$(RELEASE)"'
 
 .PHONY: all test clean
 
