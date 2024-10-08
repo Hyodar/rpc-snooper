@@ -10,14 +10,15 @@ import (
 )
 
 type CliArgs struct {
-	verbose bool
-	version bool
-	help    bool
-	target  string
-	bind    string
-	port    int
-	nocolor bool
-	noapi   bool
+	verbose     bool
+	version     bool
+	help        bool
+	target      string
+	bind        string
+	port        int
+	nocolor     bool
+	noapi       bool
+	metricsPort int
 }
 
 func main() {
@@ -29,6 +30,7 @@ func main() {
 	flags.BoolVarP(&cliArgs.help, "help", "h", false, "Run with verbose output")
 	flags.StringVarP(&cliArgs.bind, "bind-address", "b", "127.0.0.1", "Address to bind to and listen for incoming requests.")
 	flags.IntVarP(&cliArgs.port, "port", "p", 3000, "Port to listen for incoming requests.")
+	flags.IntVarP(&cliArgs.metricsPort, "metrics-port", "m", 9092, "Port to listen for metrics.")
 	flags.BoolVar(&cliArgs.nocolor, "no-color", false, "Do not use terminal colors in output")
 	flags.BoolVar(&cliArgs.noapi, "no-api", false, "Do not provide management REST api")
 
@@ -75,9 +77,8 @@ func main() {
 		logger.Errorf("Failed initializing server: %v", err)
 	}
 
-	err = rpcSnooper.StartServer(cliArgs.bind, cliArgs.port, cliArgs.noapi)
+	err = rpcSnooper.StartServer(cliArgs.bind, cliArgs.port, cliArgs.metricsPort, cliArgs.noapi)
 	if err != nil {
 		logger.Errorf("Failed processing server: %v", err)
 	}
-
 }

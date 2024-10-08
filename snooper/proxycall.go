@@ -12,13 +12,15 @@ import (
 )
 
 type proxyCallContext struct {
-	callIndex    uint64
-	context      context.Context
-	cancelFn     context.CancelFunc
-	cancelled    bool
-	deadline     time.Time
-	updateChan   chan time.Duration
-	streamReader io.ReadCloser
+	callIndex        uint64
+	context          context.Context
+	cancelFn         context.CancelFunc
+	cancelled        bool
+	deadline         time.Time
+	updateChan       chan time.Duration
+	streamReader     io.ReadCloser
+	duration         time.Duration
+	responseDuration time.Duration
 }
 
 func (s *Snooper) newProxyCallContext(parent context.Context, timeout time.Duration) *proxyCallContext {
@@ -104,6 +106,7 @@ func (s *Snooper) processProxyCall(w http.ResponseWriter, r *http.Request) error
 	}
 	client := &http.Client{Timeout: 0}
 	req = req.WithContext(callContext.context)
+	now := time.Now()
 	resp, err := client.Do(req)
 	if err != nil {
 		return fmt.Errorf("proxy request error: %w", err)
@@ -112,6 +115,7 @@ func (s *Snooper) processProxyCall(w http.ResponseWriter, r *http.Request) error
 		resp.Body.Close()
 		return fmt.Errorf("proxy context cancelled")
 	}
+	callContext.duration = time.Since(now)
 	callContext.streamReader = resp.Body
 
 	respContentType := resp.Header.Get("Content-Type")

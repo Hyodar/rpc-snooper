@@ -38,7 +38,7 @@ func NewSnooper(target string, logger logrus.FieldLogger) (*Snooper, error) {
 	}, nil
 }
 
-func (s *Snooper) StartServer(host string, port int, noApi bool) error {
+func (s *Snooper) StartServer(host string, port int, metricsPort int, noApi bool) error {
 	router := mux.NewRouter()
 
 	if !noApi {
@@ -56,6 +56,8 @@ func (s *Snooper) StartServer(host string, port int, noApi bool) error {
 		Addr:    fmt.Sprintf("%v:%v", host, port),
 		Handler: n,
 	}
+
+	go prometheusListener(fmt.Sprintf("%v:%v", host, metricsPort))
 
 	s.logger.Infof("listening on: %v", srv.Addr)
 	return srv.ListenAndServe()

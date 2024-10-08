@@ -161,6 +161,13 @@ func (s *Snooper) logResponse(ctx *proxyCallContext, req *http.Request, rsp *htt
 	}
 
 	s.logger.WithFields(logFields).Infof("RESPONSE #%v: %v %v", ctx.callIndex, req.Method, req.URL.String())
+
+	logEntry, err := BuildLogEntry(req, rsp, ctx.duration)
+	if err != nil {
+		s.logger.Warnf("failed building log entry: %v", err)
+	} else {
+		prometheusMetricsRegister(logEntry)
+	}
 }
 
 func (s *Snooper) logEventResponse(ctx *proxyCallContext, req *http.Request, rsp *http.Response, body []byte) {
