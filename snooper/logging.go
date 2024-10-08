@@ -111,6 +111,13 @@ func (s *Snooper) logRequest(ctx *proxyCallContext, req *http.Request, body io.R
 		}
 	}
 
+	jrpcReq, err := ParseJSONRPCRequest(strings.NewReader(logFields["body"].(string)))
+	if err != nil {
+		s.logger.Warnf("failed parsing json rpc request: %v", err)
+	} else {
+		ctx.jrpcMethod = jrpcReq.Method
+	}
+
 	s.logger.WithFields(logFields).Infof("REQUEST #%v: %v %v", ctx.callIndex, req.Method, req.URL.String())
 }
 
@@ -160,12 +167,13 @@ func (s *Snooper) logResponse(ctx *proxyCallContext, req *http.Request, rsp *htt
 		}
 	}
 
-	s.logger.WithFields(logFields).Infof("RESPONSE #%v: %v %v", ctx.callIndex, req.Method, req.URL.String())
+	s.logger.WithFields(logFields).Infof("RESPONSE #%v: %v %v %v", ctx.callIndex, req.Method, req.URL.String(), ctx.duration.Seconds())
 
-	logEntry, err := BuildLogEntry(req, rsp, ctx.duration)
+	logEntry, err := BuildLogEntry(req, rsp, ctx.duration, ctx.jrpcMethod)
 	if err != nil {
 		s.logger.Warnf("failed building log entry: %v", err)
 	} else {
+		s.logger.WithFields(logFields).Infof("registering metrics for %#v %v", logEntry, logFields["body"].(string))
 		prometheusMetricsRegister(logEntry)
 	}
 }

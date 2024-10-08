@@ -44,11 +44,15 @@ func ParseJSONRPCRequest(body io.Reader) (*JSONRPCRequest, error) {
 	return &req, nil
 }
 
-func BuildLogEntry(req *http.Request, resp *http.Response, duration time.Duration) (*logEntry, error) {
-	// decode json rpc body
-	jrpcReq, err := ParseJSONRPCRequest(req.Body)
-	if err != nil {
-		return nil, err
+func BuildLogEntry(req *http.Request, resp *http.Response, duration time.Duration, jrpcMethod string) (*logEntry, error) {
+	bytesSent := uint64(0)
+	if req.ContentLength > 0 {
+		bytesSent = uint64(req.ContentLength)
+	}
+
+	bytesReceived := uint64(0)
+	if resp.ContentLength > 0 {
+		bytesReceived = uint64(resp.ContentLength)
 	}
 
 	return &logEntry{
@@ -59,10 +63,10 @@ func BuildLogEntry(req *http.Request, resp *http.Response, duration time.Duratio
 		status:        strconv.Itoa(resp.StatusCode),
 		protocol:      req.Proto,
 		uri:           req.URL.String(),
-		jrpcMethod:    jrpcReq.Method,
+		jrpcMethod:    jrpcMethod,
 		clientIP:      net.ParseIP(req.RemoteAddr),
 		duration:      duration.Seconds(),
-		bytesSent:     uint64(resp.ContentLength),
-		bytesReceived: uint64(resp.ContentLength),
+		bytesSent:     bytesSent,
+		bytesReceived: bytesReceived,
 	}, nil
 }

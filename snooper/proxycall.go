@@ -21,6 +21,7 @@ type proxyCallContext struct {
 	streamReader     io.ReadCloser
 	duration         time.Duration
 	responseDuration time.Duration
+	jrpcMethod       string
 }
 
 func (s *Snooper) newProxyCallContext(parent context.Context, timeout time.Duration) *proxyCallContext {
