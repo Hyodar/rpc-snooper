@@ -66,7 +66,7 @@ func main() {
 
 	//fmt.Printf("%v", flags.Args())
 	if flags.NArg() < 2 || flags.Arg(1) == "" {
-		cliArgs.target = "http://127.0.0.1:8545"
+		cliArgs.target = "http://127.0.0.1:8551"
 	} else {
 		cliArgs.target = flags.Arg(1)
 	}
