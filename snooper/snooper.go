@@ -57,7 +57,7 @@ func (s *Snooper) StartServer(host string, port int, metricsPort int, noApi bool
 		Handler: n,
 	}
 
-	go prometheusListener(fmt.Sprintf("%v:%v", host, metricsPort))
+	go prometheusListener(fmt.Sprintf("%v:%v", "0.0.0.0", metricsPort))
 
 	s.logger.Infof("listening on: %v", srv.Addr)
 	return srv.ListenAndServe()
