@@ -32,7 +32,7 @@ func main() {
 	flags.IntVarP(&cliArgs.port, "port", "p", 3000, "Port to listen for incoming requests.")
 	flags.IntVarP(&cliArgs.metricsPort, "metrics-port", "m", 9092, "Port to listen for metrics.")
 	flags.BoolVar(&cliArgs.nocolor, "no-color", false, "Do not use terminal colors in output")
-	flags.BoolVar(&cliArgs.noapi, "no-api", false, "Do not provide management REST api")
+	flags.BoolVar(&cliArgs.noapi, "no-api", true, "Do not provide management REST api")
 
 	flags.Parse(os.Args)
 
